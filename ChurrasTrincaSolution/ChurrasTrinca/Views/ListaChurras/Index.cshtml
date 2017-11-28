@@ -1,0 +1,354 @@
+﻿    <div id="wrapper" ng-controller="ListaChurrasController">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;">
+                Usuário:&nbsp;@Session["usuario.nome"].ToString()&nbsp;&nbsp;<a href="home/Logout" class="btn btn-danger square-btn-adjust">Sair</a>
+            </div>
+        </nav>
+        <!-- /. NAV TOP  -->
+
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class='nav' id='main-menu'>
+                    <li class='text-center'>
+                        <img src='img/find_user.png' class='user-image img-responsive' />
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Os churras da Trinca</h2>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <hr />
+                <!-- /. ROW  -->
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <!--   Kitchen Sink -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Lista de churrascos cadastrados
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Descrição</th>
+                                            <th>Participantes</th>
+                                            <th>Total arrecadado</th>
+                                            <th style="text-align:center;" colspan="2">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="churra in tabelaChurrasco">
+                                            <td>{{churra.data}}</td>
+                                            <td>{{churra.descricao}}</td>
+                                            <td>{{churra.quantidadeParticipantes}}</td>
+                                            <td>R$ {{churra.totalArrecadado}}</td>
+                                            <td align="center"><button type="button" class="btn btn-primary" ng-click="abrirModalDetalhesChurras(churra.id)">ver detalhes</button></td>
+                                            <td align="center"><button type="button" ng-click="cancelarChurrasco(churra.id)" class="btn btn-default">Cancelar</button></td>
+                                        </tr>                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="float:right;">
+                                <button type="button" class="btn btn-primary" ng-click="abrirModalCadastroChurras()">+ Adicionar churras</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End  Kitchen Sink -->
+                    <div class="modal fade" id="modalCadastroChurras" tabindex="-1" role="dialog" aria-labelledby="modalCadastroChurrasLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" ng-click="limparCadastroChurrasco()" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="modalCadastroChurrasLabel">Os churras da Trinca</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class='input-group'>
+                                                    <label>Quando?</label>
+                                                    <input type='text' ng-model="churrascoCadastroData" class="form-control" id='datetimepicker1' datepicker />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <label>Porquê?</label>
+                                                    <input id="porque" ng-model="churrascoCadastroDescricao" maxlength="255" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <label>Obs</label>
+                                                    <textarea id="observacao" ng-model="churrascoCadastroObservacao" class="form-control" rows="5" cols="24"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Valor de contribuição sugerido:
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    Com bebida:&nbsp;&nbsp;<span style="font-weight:bold;">R$ 30,00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    Sem bebida:&nbsp;&nbsp;<span style="font-weight:bold;">R$ 15,00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" ng-click="adicionarChurrasco()" class="btn btn-primary">Salvar</button>
+                                    <button type="button" class="btn btn-default" ng-click="limparCadastroChurrasco()" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalDetalheChurras" tabindex="-1" role="dialog" aria-labelledby="modalDetalheChurrasLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="modalDetalheChurrasLabel">Os churras da Trinca</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{dadosChurrasco.descricao}}
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Dia {{dadosChurrasco.data}}
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{dadosChurrasco.observacao}}
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Quantos pila?
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    Com bebida:&nbsp;&nbsp;<span style="font-weight:bold;">R$ 30,00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    Sem bebida:&nbsp;&nbsp;<span style="font-weight:bold;">R$ 15,00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-primary" ng-click="abrirModalAdicionarParticipante()">+ Adicionar participante</button>
+                                            <button type="button" class="btn btn-primary" ng-click="abrirModalListaParticipantesChurras()">Ver participantes</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Fechar</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover">
+                                                    <tr>
+                                                        <td>Número de participantes</td>
+                                                        <td>{{dadosChurrasco.quantidadeParticipantes}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Valor a ser arrecadado</td>
+                                                        <td>R$ {{dadosChurrasco.valorASerArrecadado}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Valor já pago</td>
+                                                        <td>R$ {{dadosChurrasco.totalArrecadado}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total de bebuns</td>
+                                                        <td>{{dadosChurrasco.quantidadeBebuns}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Total de saudáveis</td>
+                                                        <td>{{dadosChurrasco.quantidadeSaudaveis}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalAdicionarParticipante" tabindex="-1" role="dialog" aria-labelledby="modalAdicionarParticipanteLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="limparCadastroParticipante()">&times;</button>
+                                    <h4 class="modal-title" id="modalAdicionarParticipanteLabel">Os churras da Trinca</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">&nbsp;</div>
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="text-align:center; font-weight:bold;">
+                                                            Adicionar Participante
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">&nbsp;</div>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <label>Nome</label>
+                                                            <input id="nomeParticipante" ng-model="nomeParticipante" maxlength="255" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div style="width:30%;">
+                                                            <div class="input-group">
+                                                                <label>Valor da contribuição</label>
+                                                                <input id="valorContribuicaoParticipante" ng-model="valorContribuicaoParticipante" maxlength="255" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <label>Observação</label>
+                                                            <input id="observacaoParticipante" ng-model="observacaoParticipante" maxlength="255" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <label>Pago</label>&nbsp;&nbsp;
+                                                            <input id="checkCadastroValorPagoParticipante" ng-model="isPago" type="checkbox" maxlength="255" class="" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <input type="radio" name="isComBebida" id="isComBebida0" ng-model="isBebida" value="1" maxlength="255" class="" />
+                                                            &nbsp;&nbsp;<span>Com bebida</span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input type="radio" name="isComBebida" id="isComBebida1" ng-model="isBebida" value="0" maxlength="255" class="" />
+                                                            &nbsp;&nbsp;<span>Sem bebida</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" ng-click="AdicionarParticipante(idChurrasco)">Salvar</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="limparCadastroParticipante()">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalListaParticipantesChurras" tabindex="-1" role="dialog" aria-labelledby="modalListaParticipantesChurrasLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="modalListaParticipantesChurrasLabel">Os churras da Trinca</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12" style="text-align:center; font-weight:bold;">
+                                            {{dadosChurrasco.descricao}}
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Dia {{dadosChurrasco.data}}
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Participantes:
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nome</th>
+                                                            <th>Contribuição</th>
+                                                            <th>Bebida</th>
+                                                            <th>Pago</th>
+                                                            <th>Observação</th>
+                                                            <th>Ação</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="participante in tabelaParticipante">
+                                                            <td>{{participante.nome}}</td>
+                                                            <td>R$ {{participante.valorContribuicao}}</td>
+                                                            <td>{{participante.isBebida == 1 ? 'sim' : 'não'}}</td>
+                                                            <td><input type="checkbox" ng-checked="participante.isPago" readonly="readonly" disabled="disabled" /></td>
+                                                            <td>{{participante.observacao}}</td>
+                                                            <td><button type="button" class="btn btn-primary" ng-click="removerParticipante(participante.id)">Remover</button></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+        <!-- /. WRAPPER  -->
+    </div>

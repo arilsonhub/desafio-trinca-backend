@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Churras da Trinca</title>    
+    <!-- BOOTSTRAP STYLES-->
+    @Styles.Render("~/Content/bootstrap.css")
+    <!-- FONTAWESOME STYLES-->
+    @Styles.Render("~/Content/font-awesome.css")    
+    <!-- JQUERY UI STYLES-->
+    @Styles.Render("~/Scripts/jquery-ui/jquery-ui-1.9.2.min.css")    
+    <!-- CUSTOM STYLES-->
+    @Styles.Render("~/Content/custom.css")    
+    @Styles.Render("~/Content/validation-style.css")    
+</head>
+<body ng-app="churrasTrinca">
+    <div id="gifLoader"></div>
+    <!-- mascara para cobrir o sistema -->
+    <div id="fundoEscuro"></div>
+    <div id=messageDialog title="Informação do sistema">
+        <p id="messageDialogText"></p>
+    </div>
+    <div id=messageConfirmDialog title="Confirmar ação">
+        <p id="messageConfirmDialogText"></p>
+    </div>
+    @RenderBody()
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- JQUERY SCRIPTS -->
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")    
+    @Scripts.Render("~/Scripts/jquery.maskMoney.js")    
+    <!-- BOOTSTRAP SCRIPTS -->        
+    @Scripts.Render("~/Scripts/bootstrap.min.js")
+    <!-- METISMENU SCRIPTS -->    
+    @Scripts.Render("~/Scripts/jquery.metisMenu.js")
+    <!-- PLUGIN SCRIPTS -->    
+    @Scripts.Render("~/Scripts/moment-with-locales.js")    
+    @Scripts.Render("~/Scripts/jquery-ui/jquery-ui-1.9.2.min.js") 
+    @Scripts.Render("~/Scripts/dataTables/jquery.dataTables.js")    
+    @Scripts.Render("~/Scripts/dataTables/dataTables.bootstrap.js")
+    @Scripts.Render("~/Scripts/jquery.maskedinput.min.js")    
+    <!-- ANGULAR JS SCRIPTS -->    
+    @Scripts.Render("~/Scripts/angular_1.3.15.min.js")
+    <!-- CUSTOM SCRIPTS -->    
+    @Scripts.Render("~/Scripts/custom.js")
+    @Scripts.Render("~/Scripts/controllers/ListaChurrasController.js")
+
+    @RenderSection("scripts", required: false)   
+</body>
+</html>
